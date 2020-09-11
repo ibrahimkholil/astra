@@ -319,21 +319,27 @@ if ( ! class_exists( 'Astra_Builder_Helper' ) ) {
 				$grids[] = astra_get_option( 'header-mobile-items' );
 				$grids[] = astra_get_option( 'footer-desktop-items' );
 
-				foreach ( $grids as $row_gird => $row_grids ) {
+				if ( ! empty( $grids ) ) {
 
-					foreach ( $row_grids as $row => $grid ) {
+					foreach ( $grids as $row_gird => $row_grids ) {
 
-						if ( ! in_array( $row, array( 'below', 'above', 'primary', 'popup' ) ) ) {
-							continue;
+						if ( ! empty( $row_grids ) ) {
+
+							foreach ( $row_grids as $row => $grid ) {
+
+								if ( ! in_array( $row, array( 'below', 'above', 'primary', 'popup' ) ) ) {
+									continue;
+								}
+
+								if ( ! is_array( $grid ) ) {
+									continue;
+								}
+
+								$result              = array_values( $grid );
+								$loaded_component    = call_user_func_array( 'array_merge', $result );
+								$loaded_components[] = is_array( $loaded_component ) ? $loaded_component : array();
+							}
 						}
-
-						if ( ! is_array( $grid ) ) {
-							continue;
-						}
-
-						$result              = array_values( $grid );
-						$loaded_component    = call_user_func_array( 'array_merge', $result );
-						$loaded_components[] = is_array( $loaded_component ) ? $loaded_component : array();
 					}
 				}
 
